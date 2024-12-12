@@ -20,7 +20,31 @@ async function fetchUserData(id) {
 
 // Put your code here
 // ------------------
+const renderProfiles = async () => {
+  // fetch user ids
+  const userId = await fetchFollowerIds();
+  // get user data in promise
+  const users = userId.map((id) => fetchUserData(id));
+  // wait for user data
+  const userData = await Promise.all(users); 
+  // display user data to html
+  document.querySelector('.followers').innerHTML = userData.map((user) => userHtml(user)).join(''); 
+  
+}
+// html to render to passing in user data
+function userHtml(user) {
+  return (
+  `<div class="profile">
+    <img class="profile__avatar" src=${user.avatar}>
+    <div class="profile__info">
+      <p class="profile__username">${user.username}</p>
+      <p class="profile__bio">${user.bio}</p>
+    </div>
+    <button class="profile__unfollow">Remove</button>
+  </div>`)
+}
 
+renderProfiles();
 // ------------------
 
 // Fake data - do not access USERS directly in your solution
