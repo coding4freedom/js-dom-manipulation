@@ -7,8 +7,14 @@ const countdown = 25 * 60 * 1000;
 const milisTimer = document.querySelector('.timer__milliseconds');
 const secondsTimer = document.querySelector('.timer__seconds');
 const minutesTimer = document.querySelector('.timer__minutes');
+const startBtn = document.querySelector('.stopwatch__start');
+const stopBtn = document.querySelector('.stopwatch__stop');
+const resetBtn = document.querySelector('.stopwatch__reset');
 
 function startTimer() {
+    startBtn.disabled = true;
+    stopBtn.disabled = false;
+    resetBtn.disabled = false;
     startTime = Date.now();
     
     console.log('start');
@@ -16,13 +22,17 @@ function startTimer() {
 }
 
 function stopTimer() {
+    startBtn.disabled = false;
+    stopBtn.disabled = true;
+    
     
     savedTime = Date.now() - startTime + savedTime;
     cancelAnimationFrame(cancelId)
     console.log('stop');
 }
 
-function resetTimer() {
+function resetTimer() {      
+    
     startTime = Date.now();
     savedTime = 0;
     
@@ -36,6 +46,12 @@ function updateTimer() {
     let milisElapsed = Date.now() - startTime + savedTime;
 
     let timeLeftInMs = countdown - milisElapsed;
+
+    if ( timeLeftInMs < 0) {
+        timeLeftInMs = 0;
+        cancelAnimationFrame(cancelId);
+        cancelId = null;
+    }
     let secondsLeft = timeLeftInMs / 1000;
     let minutesLeft = secondsLeft / 60;
 
@@ -57,5 +73,7 @@ function updateTimer() {
     secondsTimer.innerHTML = secondesText;
     minutesTimer.innerHTML = minutesText;
 
-    cancelId = requestAnimationFrame(updateTimer);
+    if ( cancelId ) {
+        cancelId = requestAnimationFrame(updateTimer);
+    }
 }
