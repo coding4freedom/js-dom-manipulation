@@ -22,7 +22,6 @@ async function fetchUserData(id) {
 // Put your code here
 // ------------------
 
-
 // ------------------
 
 // Fake data - do not access USERS directly in your solution
