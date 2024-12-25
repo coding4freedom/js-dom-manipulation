@@ -3,7 +3,7 @@ const secondHandle = document.querySelector(".handle__second");
 const minuteHandle = document.querySelector(".handle__minute");
 const hourHandle = document.querySelector(".handle__hour");
 
-requestAnimationFrame(setHandles)
+requestAnimationFrame(setHandles);
 
 function setHandles() {
   const d = new Date();
@@ -38,5 +38,5 @@ function setHandles() {
   hourHandle.style.transform = `translateX(-50%) rotate(${hoursAngle}deg)`;
   minuteHandle.style.transform = `translateX(-50%) rotate(${minutesAngle}deg)`;
   
-  requestAnimationFrame(setHandles)
+  requestAnimationFrame(setHandles);
 }
