@@ -25,19 +25,58 @@ const allSquares = document.querySelectorAll('.board__square');
 const title = document.querySelector('.board__title');
 
 let currentPlayer = 'X';
-let board = []
+let gameOver = false;
+let board = new Array(9);
 
 allSquares.forEach((square, i) => {
     
-    square.addEventListener('click', () => {        
+    square.addEventListener('click', () => {  
+        if (square.innerHTML || gameOver) {
+            return;
+        }      
         square.innerHTML = currentPlayer;
+        board[i] = currentPlayer;
+        
 
-        checkWin();
+        if (checkWin()) {
+            console.log('this ran');
+            title.innerHTML = currentPlayer + ' has won the game';
+            gameOver = true;
+            return;
+        }
+
+        if (checkDraw()) {
+            title.innerHTML = "Draw!";
+            gameOver = true;
+            return;
+        }
 
         currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
         title.innerHTML = `${currentPlayer}'s Turn`
     })
 })
+
+function checkDraw() {
+    
+    for (let i = 0; i < board.length; i++) {
+        if(!board[i]) {
+            return false;
+        }        
+    }
+    return true;
+}
+
+function restart() {
+    gameOver = false;
+   // 1. Reset title
+   title.innerHTML = `${currentPlayer}'s turn`;
+   // 2. Reset DOM
+    allSquares.forEach(square => {
+        square.innerHTML = '';
+    })
+   // 3. Reset board
+   board = new Array(9);
+}
 
 function checkWin() {
     const winningIndicies = [
@@ -50,11 +89,23 @@ function checkWin() {
         [0, 4, 8],
         [2, 4, 6],
     ];
-    winningIndicies.forEach((index, i) => {
-        const matchingIndicies = index[i];
-        console.log(matchingIndicies);
-    })
+    for ( let i = 0; i < winningIndicies.length; i++) {
+        const matchingIndicies = winningIndicies[i];
+        
+        let symbol1 = board[matchingIndicies[0]];
+        let symbol2 = board[matchingIndicies[1]];
+        let symbol3 = board[matchingIndicies[2]];
+        
+        if (!symbol1 || !symbol2 || !symbol3) {
+            continue;
+        }
+
+        if (symbol1 === symbol2 && symbol2 === symbol3) {
+            return true;
+        }
+    }
+    
 }
 
 
-// 15:17
+// 32:18
